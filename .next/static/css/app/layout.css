@@ -766,9 +766,6 @@ video {
 .w-full {
   width: 100%;
 }
-.w-60 {
-  width: 15rem;
-}
 .max-w-full {
   max-width: 100%;
 }
@@ -1721,14 +1718,6 @@ video {
 
   .lg\:p-32 {
     padding: 8rem;
-  }
-
-  .lg\:p-2 {
-    padding: 0.5rem;
-  }
-
-  .lg\:p-0 {
-    padding: 0px;
   }
 
   .lg\:px-5 {

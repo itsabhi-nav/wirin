@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import imageAsset from "/image/logo.jpg";
 
-const loginUrl = process.env.LOGIN_URL;
+const loginUrl = process.env.NEXT_PUBLIC_LOGIN_URL;
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -123,22 +123,13 @@ const Header = () => {
                   >
                     Details
                   </Link>
-                  {/* <Link
+                  <Link
                     href="/Download"
                     className="block px-4 py-2 hover-bg-gray-100 dark-hover-bg-gray-600 dark-hover-text-gray-500"
                     onClick={handleDropdownLinkClick}
                   >
                     Download
-                  </Link> */}
-
-                  <Link
-                    href={loginUrl}
-                    className="block pl-3 pr-3 text-white bg-indigo-500 border-0 px-1 focus-outline-none hover-bg-indigo-600 rounded text-lg mt-0.1 md:mt-0"
-                    onClick={closeMobileMenu}
-                  >
-                    Log In
                   </Link>
-                  
                 </div>
               </div>
             </li>
@@ -183,14 +174,21 @@ const Header = () => {
                 Contact
               </Link>
             </li>
-
             <Link
-              href="/Login"
+              href={loginUrl}
               className="block pl-3 pr-3 text-white bg-indigo-500 border-0 px-1 focus-outline-none hover-bg-indigo-600 rounded text-lg mt-0.1 md:mt-0"
               onClick={closeMobileMenu}
             >
               Log In
             </Link>
+
+            {/* <Link
+              href="/Login"
+              className="block pl-3 pr-3 text-white bg-indigo-500 border-0 px-1 focus-outline-none hover-bg-indigo-600 rounded text-lg mt-0.1 md:mt-0"
+              onClick={closeMobileMenu}
+            >
+              Log In
+            </Link> */}
           </ul>
         </div>
       </div>

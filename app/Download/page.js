@@ -261,6 +261,7 @@
 // export default Download;
 
 // Import necessary modules
+
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -285,7 +286,7 @@ const Download = () => {
   // Function to close the form
   const closeForm = () => {
     setShowForm(false);
-    setSelectedDataset(null); // Reset selected dataset when form is closed
+    setSelectedDataset(null); // Reset selected dataset when the form is closed
   };
 
   // Function to handle form input changes
@@ -296,7 +297,6 @@ const Download = () => {
 
   // Fetch datasets from the API on component mount
   useEffect(() => {
-    // Replace "YOUR_AUTH_TOKEN" with the appropriate token for fetching datasets
     const authToken = process.env.NEXT_PUBLIC_API_KEY;
 
     axios
@@ -307,7 +307,7 @@ const Download = () => {
       })
       .then((res) => {
         console.log("Datasets:", res.data.data);
-        setDatasets(res.data.data);
+        setDatasets(res.data.data || []); // Ensure datasets is not null or undefined
       })
       .catch((error) => console.error("Error fetching datasets:", error));
   }, []);
@@ -368,52 +368,57 @@ const Download = () => {
       <section className="text-gray-600 -mt-20 body-font">
         <div className="container px-5 py-24 mx-auto">
           <div className="flex flex-wrap -m-4">
-            {datasets.map((dataset) => {
-              const {
-                id,
-                attributes: {
-                  title,
-                  description,
-                  image: { data: imageArray },
-                  downloadLink,
-                },
-              } = dataset;
+            {datasets &&
+              datasets.map((dataset) => {
+                const {
+                  id,
+                  attributes: {
+                    title,
+                    description,
+                    image: { data: imageData },
+                    downloadLink,
+                  },
+                } = dataset;
 
-              const imageUrl = `${process.env.NEXT_PUBLIC_API_URL}${imageArray[0].attributes.url}`;
+                const imageUrl = imageData?.attributes?.url
+                  ? `${process.env.NEXT_PUBLIC_API_URL}${imageData.attributes.url}`
+                  : ""; // Set a default value or handle the case when attributes.url is undefined
 
-              return (
-                <div className="p-4 md:w-1/3" key={id}>
-                  <div
-                    className="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden flex flex-col download-card"
-                    onClick={() => handleCardClick(dataset)}
-                  >
-                    <img
-                      className="lg:h-full md:h-full w-full object-cover object-center"
-                      src={imageUrl}
-                      alt={title}
-                    />
-                    <div className="p-6 flex-grow">
-                      <div className="mb-4">
-                        <h1 className="title-font text-lg font-medium text-gray-900 mb-3">
-                          {title}
-                        </h1>
-                        <p className="leading-relaxed text-justify">
-                          {description}
-                        </p>
-                      </div>
-                      <div className="flex items-center justify-center mt-auto">
-                        <button
-                          onClick={openForm}
-                          className="text-indigo-500 inline-flex items-center bg-indigo-500 text-white px-6 py-2 rounded-full hover:bg-indigo-600 focus:ring-4 focus:outline-none focus:ring-blue-300"
-                        >
-                          Download Now
-                        </button>
+                return (
+                  <div className="p-4 md:w-1/3" key={id}>
+                    <div
+                      className="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden flex flex-col download-card"
+                      onClick={() => handleCardClick(dataset)}
+                    >
+                      {imageUrl && (
+                        <img
+                          className="lg:h-full md:h-full w-full object-cover object-center"
+                          src={imageUrl}
+                          alt={title}
+                        />
+                      )}
+                      <div className="p-6 flex-grow">
+                        <div className="mb-4">
+                          <h1 className="title-font text-lg font-medium text-gray-900 mb-3">
+                            {title}
+                          </h1>
+                          <p className="leading-relaxed text-justify">
+                            {description}
+                          </p>
+                        </div>
+                        <div className="flex items-center justify-center mt-auto">
+                          <button
+                            onClick={() => handleCardClick(dataset)}
+                            className="text-indigo-500 inline-flex items-center bg-indigo-500 text-white px-6 py-2 rounded-full hover:bg-indigo-600 focus:ring-4 focus:outline-none focus:ring-blue-300"
+                          >
+                            Download Now
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
           </div>
         </div>
       </section>
